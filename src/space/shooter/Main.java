@@ -6,28 +6,17 @@ import space.shooter.ui.Frame;
 
 public class Main {
 	
-	public static volatile boolean run = false;
-	
-	public static final String TITLE = "Space Shooter";
-	
 	public static void main(String[] args) {
+		Utility.calculateDimensions();		// calculates appropriate dimensions for screen size...
+		
 		try {
 			Frame frame = new Frame();
-			frame.setTitle(TITLE);
+			frame.setTitle(Utility.TITLE);
 			frame.setVisible(true);
 		}
 		catch (Exception exception) {
-			exception.printStackTrace();
-			JOptionPane.showMessageDialog(null, exception.getMessage(), TITLE, JOptionPane.ERROR_MESSAGE);
-		}
-	}
-	
-	public static void sleep(long milliseconds) {
-		try {
-			Thread.sleep(milliseconds);
-		}
-		catch (Exception exception) {
-			exception.printStackTrace();
+			exception.printStackTrace();		// for easier debugging...
+			JOptionPane.showMessageDialog(null, exception.getMessage(), Utility.TITLE, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

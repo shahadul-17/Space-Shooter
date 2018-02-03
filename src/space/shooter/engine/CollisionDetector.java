@@ -2,15 +2,15 @@ package space.shooter.engine;
 
 import java.util.LinkedList;
 
-import space.shooter.Main;
-import space.shooter.ui.CustomPanel;
+import space.shooter.Utility;
+import space.shooter.ui.CustomComponent;
 
 public class CollisionDetector implements Runnable {
 	
-	private CustomPanel player, canvas;
-	private LinkedList<CustomPanel> bullets, obstacles;
+	private CustomComponent player, canvas;
+	private LinkedList<CustomComponent> bullets, obstacles;
 	
-	public CollisionDetector(CustomPanel player, CustomPanel canvas, LinkedList<CustomPanel> bullets, LinkedList<CustomPanel> obstacles) {
+	public CollisionDetector(CustomComponent player, CustomComponent canvas, LinkedList<CustomComponent> bullets, LinkedList<CustomComponent> obstacles) {
 		this.player = player;
 		this.canvas = canvas;
 		this.bullets = bullets;
@@ -25,7 +25,7 @@ public class CollisionDetector implements Runnable {
 			try {
 				if (bullets == null) {
 					for (i = 0; i < obstacles.size(); i++) {
-						CustomPanel stone = obstacles.get(i);
+						CustomComponent stone = obstacles.get(i);
 						
 						if (stone.getParent() == canvas && stone.getBounds().intersects(player.getBounds())) {
 							canvas.remove(player);
@@ -37,11 +37,13 @@ public class CollisionDetector implements Runnable {
 				else {
 					for (i = 0; i < bullets.size(); i++) {
 						for (j = 0; j < obstacles.size(); j++) {
-							CustomPanel obstacle = obstacles.get(j);
+							CustomComponent obstacle = obstacles.get(j);
 							
 							if (bullets.get(i).getBounds().intersects(obstacle.getBounds())) {
 								canvas.remove(obstacle);
+								obstacles.remove(obstacle);
 								canvas.remove(bullets.get(i));
+								bullets.remove(i);
 								
 								break;
 							}
@@ -53,7 +55,7 @@ public class CollisionDetector implements Runnable {
 				exception.printStackTrace();
 			}
 			
-			Main.sleep(20);
+			Utility.sleep(20);
 		}
 	}
 	

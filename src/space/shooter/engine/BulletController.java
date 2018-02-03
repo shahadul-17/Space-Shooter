@@ -2,10 +2,8 @@ package space.shooter.engine;
 
 import java.util.LinkedList;
 
-import javax.swing.ImageIcon;
-
-import space.shooter.Main;
-import space.shooter.ui.CustomPanel;
+import space.shooter.Utility;
+import space.shooter.ui.CustomComponent;
 
 public class BulletController implements Runnable {
 	
@@ -13,20 +11,15 @@ public class BulletController implements Runnable {
 	
 	private int bulletIndex = 0;
 	
-	private CustomPanel player, canvas;
-	private CustomPanel[] bullets = new CustomPanel[50];
+	private CustomComponent player, canvas;
+	private CustomComponent[] bullets;
 	
-	private LinkedList<CustomPanel> bulletsOnCanvas = new LinkedList<CustomPanel>();
+	private LinkedList<CustomComponent> bulletsOnCanvas = new LinkedList<CustomComponent>();
 	
-	public BulletController(CustomPanel player, CustomPanel canvas) {
+	public BulletController(CustomComponent player, CustomComponent canvas, CustomComponent[] bullets) {
 		this.player = player;
 		this.canvas = canvas;
-		
-		ImageIcon bulletImageIcon = new ImageIcon(this.getClass().getResource("/resources/images/bullet.png"));
-		
-		for (int i = 0; i < bullets.length; i++) {
-			bullets[i] = new CustomPanel(bulletImageIcon);
-		}
+		this.bullets = bullets;
 	}
 	
 	private void spawnBullet() {
@@ -34,7 +27,7 @@ public class BulletController implements Runnable {
 			bulletIndex = 0;
 		}
 		
-		CustomPanel bullet = bullets[bulletIndex];
+		CustomComponent bullet = bullets[bulletIndex];
 		bullet.setLocation(player.getX() + (player.getWidth() / 2) - 7, player.getY() - 20);		// some calculations could've been pre-calculated...
 		bulletsOnCanvas.add(bullet);
 		canvas.add(bullet);
@@ -46,7 +39,7 @@ public class BulletController implements Runnable {
 		shoot = true;
 	}
 	
-	public LinkedList<CustomPanel> getBulletsOnCanvas() {
+	public LinkedList<CustomComponent> getBulletsOnCanvas() {
 		return bulletsOnCanvas;
 	}
 	
@@ -63,12 +56,12 @@ public class BulletController implements Runnable {
 			
 			if (bulletsOnCanvas.size() > 0) {
 				for (i = 0; i < bulletsOnCanvas.size(); i++) {
-					CustomPanel bullet = bulletsOnCanvas.get(i);
+					CustomComponent bullet = bulletsOnCanvas.get(i);
 					
 					if (bullet.getY() > bullet.getHeight() * -1) {
 						bullet.setLocation(bullet.getX(), bullet.getY() - (1 * bulletsOnCanvas.size()));
 						canvas.repaint();
-						Main.sleep(1);
+						Utility.sleep(1);
 					}
 					else {
 						canvas.remove(bulletsOnCanvas.get(i));
@@ -77,7 +70,7 @@ public class BulletController implements Runnable {
 				}
 			}
 			else {
-				Main.sleep(20);
+				Utility.sleep(20);
 			}
 		}
 	}

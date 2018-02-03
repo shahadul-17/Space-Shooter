@@ -1,52 +1,46 @@
 package space.shooter.engine;
 
 import java.awt.Point;
-import java.util.LinkedList;
 
-import space.shooter.Main;
-import space.shooter.ui.CustomPanel;
+import space.shooter.Utility;
+import space.shooter.ui.CustomComponent;
 
 public class PlayerController implements Runnable {
 	
 	private volatile int[] keys = new int[5];
 	
-	private CustomPanel player, canvas;
 	private Point playerLocation;
+	private CustomComponent player, canvas;
 	private BulletController bulletController;
 	
-	public PlayerController(CustomPanel player, CustomPanel canvas) {
+	public PlayerController(CustomComponent player, CustomComponent canvas, BulletController bulletController) {
 		this.player = player;
 		this.canvas = canvas;
-		this.playerLocation = player.getLocation();
-		bulletController = new BulletController(player, canvas);
+		this.bulletController = bulletController;
 		
-		new Thread(bulletController).start();
+		playerLocation = player.getLocation();
 	}
 	
 	public void setKey(int index, int value) {
 		keys[index] = value;
 	}
 	
-	public LinkedList<CustomPanel> getBulletsOnCanvas() {
-		return bulletController.getBulletsOnCanvas();
-	}
-	
 	@Override
 	public void run() {
-		while (Main.run) {
-			if (keys[0] == 1 && playerLocation.y > 35) {
+		while (Utility.run) {
+			if (keys[0] == 1 && playerLocation.y > Utility.SCREEN_OFFSET) {
 				playerLocation.y -= 5;
 			}
 			
-			if (keys[1] == 1 && playerLocation.x > 35) {
+			if (keys[1] == 1 && playerLocation.x > Utility.SCREEN_OFFSET) {
 				playerLocation.x -= 5;
 			}
 			
-			if (keys[2] == 1 && playerLocation.y < canvas.getHeight() - player.getHeight() - 35) {
+			if (keys[2] == 1 && playerLocation.y < canvas.getHeight() - player.getHeight() - Utility.SCREEN_OFFSET) {
 				playerLocation.y += 5;
 			}
 			
-			if (keys[3] == 1 && playerLocation.x < canvas.getWidth() - player.getWidth() - 35) {
+			if (keys[3] == 1 && playerLocation.x < canvas.getWidth() - player.getWidth() - Utility.SCREEN_OFFSET) {
 				playerLocation.x += 5;
 			}
 			
@@ -56,7 +50,7 @@ public class PlayerController implements Runnable {
 			
 			player.setLocation(playerLocation);
 			canvas.repaint();
-			Main.sleep(5);
+			Utility.sleep(5);
 		}
 	}
 	

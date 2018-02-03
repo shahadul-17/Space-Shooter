@@ -3,10 +3,8 @@ package space.shooter.engine;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
-
-import space.shooter.Main;
-import space.shooter.ui.CustomPanel;
+import space.shooter.Utility;
+import space.shooter.ui.CustomComponent;
 
 public class ObstacleController implements Runnable {
 	
@@ -14,22 +12,15 @@ public class ObstacleController implements Runnable {
 	private int[] obstacleIndices = new int[5];
 	
 	private Random random;
-	private CustomPanel canvas;
-	private CustomPanel[][] obstacles = new CustomPanel[obstacleIndices.length][10];
+	private CustomComponent canvas;
+	private CustomComponent[][] obstacles;
 	
-	private LinkedList<CustomPanel> obstaclesOnCanvas = new LinkedList<CustomPanel>();
+	private LinkedList<CustomComponent> obstaclesOnCanvas = new LinkedList<CustomComponent>();
 	
-	public ObstacleController(CustomPanel canvas) {
+	public ObstacleController(CustomComponent canvas, CustomComponent[][] obstacles) {
 		this.canvas = canvas;
+		this.obstacles = obstacles;
 		random = new Random();
-		
-		for (int i = 0; i < obstacles.length; i++) {
-			ImageIcon obstacleImageIcon = new ImageIcon(this.getClass().getResource("/resources/images/obstacle-" + (i + 1) + ".png"));
-			
-			for (int j = 0; j < obstacles[i].length; j++) {
-				obstacles[i][j] = new CustomPanel(obstacleImageIcon);
-			}
-		}
 	}
 	
 	private void spawnObstacle() {
@@ -39,21 +30,21 @@ public class ObstacleController implements Runnable {
 			obstacleIndices[randomNumber] = 0;
 		}
 		
-		CustomPanel stone = obstacles[randomNumber][obstacleIndices[randomNumber]];
-		stone.setLocation(random.nextInt(canvas.getWidth() - 70) + 35, stone.getHeight() * -1);
+		CustomComponent stone = obstacles[randomNumber][obstacleIndices[randomNumber]];
+		stone.setLocation(random.nextInt(canvas.getWidth() - stone.getWidth() - Utility.SCREEN_OFFSET) + Utility.SCREEN_OFFSET, stone.getHeight() * -1);
 		obstaclesOnCanvas.add(stone);
 		canvas.add(stone);
 		
 		obstacleIndices[randomNumber]++;
 	}
 	
-	public LinkedList<CustomPanel> getObstaclesOnCanvas() {
+	public LinkedList<CustomComponent> getObstaclesOnCanvas() {
 		return obstaclesOnCanvas;
 	}
 	
 	@Override
 	public void run() {
-		while (Main.run) {
+		while (Utility.run) {
 			if (counter == 50) {
 				counter = 0;
 				
@@ -62,12 +53,12 @@ public class ObstacleController implements Runnable {
 			
 			if (obstaclesOnCanvas.size() > 0) {
 				for (int i = 0; i < obstaclesOnCanvas.size(); i++) {
-					CustomPanel stone = obstaclesOnCanvas.get(i);
+					CustomComponent stone = obstaclesOnCanvas.get(i);
 					
 					if (stone.getY() < canvas.getHeight()) {
 						stone.setLocation(stone.getX(), stone.getY() + (1 * obstaclesOnCanvas.size()));
 						canvas.repaint();
-						Main.sleep(1);
+						Utility.sleep(1);
 					}
 					else {
 						canvas.remove(obstaclesOnCanvas.get(i));
@@ -76,7 +67,7 @@ public class ObstacleController implements Runnable {
 				}
 			}
 			else {
-				Main.sleep(20);
+				Utility.sleep(20);
 			}
 			
 			counter++;

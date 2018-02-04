@@ -31,7 +31,7 @@ public class ObstacleController implements Runnable {
 		}
 		
 		CustomComponent stone = obstacles[randomNumber][obstacleIndices[randomNumber]];
-		stone.setLocation(random.nextInt(canvas.getWidth() - stone.getWidth() - Utility.SCREEN_OFFSET) + Utility.SCREEN_OFFSET, stone.getHeight() * -1);
+		stone.setLocation(random.nextInt(canvas.getWidth() - stone.getWidth() - Utility.screenOffset) + Utility.screenOffset, stone.getHeight() * -1);
 		obstaclesOnCanvas.add(stone);
 		canvas.add(stone);
 		

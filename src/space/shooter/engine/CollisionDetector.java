@@ -23,18 +23,7 @@ public class CollisionDetector implements Runnable {
 		
 		while (true) {
 			try {
-				if (bullets == null) {
-					for (i = 0; i < obstacles.size(); i++) {
-						CustomComponent stone = obstacles.get(i);
-						
-						if (stone.getParent() == canvas && stone.getBounds().intersects(player.getBounds())) {
-							canvas.remove(player);
-							
-							break;
-						}
-					}
-				}
-				else {
+				if (player == null) {
 					for (i = 0; i < bullets.size(); i++) {
 						for (j = 0; j < obstacles.size(); j++) {
 							CustomComponent obstacle = obstacles.get(j);
@@ -47,6 +36,23 @@ public class CollisionDetector implements Runnable {
 								
 								break;
 							}
+						}
+					}
+				}
+				else {
+					for (i = 0; i < obstacles.size(); i++) {
+						CustomComponent stone = obstacles.get(i);
+						
+						if (stone.getParent() == canvas && stone.getBounds().intersects(player.getBounds())) {
+							canvas.remove(player);
+							
+							for (j = 0; j < bullets.size(); j++) {
+								canvas.remove(bullets.get(j));
+							}
+
+							bullets.clear();
+							
+							break;
 						}
 					}
 				}

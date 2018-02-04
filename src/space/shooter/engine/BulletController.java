@@ -39,6 +39,10 @@ public class BulletController implements Runnable {
 		shoot = true;
 	}
 	
+	public boolean isShot() {
+		return shoot;
+	}
+	
 	public LinkedList<CustomComponent> getBulletsOnCanvas() {
 		return bulletsOnCanvas;
 	}

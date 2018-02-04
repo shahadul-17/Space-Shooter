@@ -1,48 +1,31 @@
 package space.shooter.sound;
 
-import java.io.File;
-import java.net.URI;
+import java.net.URL;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.Clip;
 
 public class SoundPlayer {
 	
-	private volatile boolean play = false;
-	private byte[] buffer = new byte[8192];
-	private int bytesRead;
-	
-	private File file;
+	private Clip clip;
 	private AudioInputStream audioInputStream;
-	private AudioFormat audioFormat;
-	private SourceDataLine sourceDataLine;
 	
-	public SoundPlayer(URI uri) {
-		file = new File(uri);
+	public SoundPlayer(URL url) throws Exception {
+		clip = AudioSystem.getClip();
+		audioInputStream = AudioSystem.getAudioInputStream(url);
+		clip.open(audioInputStream);
 	}
 	
-	public void play() throws Exception {
-		play = true;
-		audioInputStream = AudioSystem.getAudioInputStream(file);
-		audioFormat = audioInputStream.getFormat();
-		
-		sourceDataLine = (SourceDataLine) AudioSystem.getLine(new DataLine.Info(SourceDataLine.class, audioFormat));
-		sourceDataLine.open(audioFormat);
-		sourceDataLine.start();
-		
-		while (play && (bytesRead = audioInputStream.read(buffer, 0, buffer.length)) != -1) {
-			sourceDataLine.write(buffer, 0, bytesRead);
-		}
-		
-		sourceDataLine.drain();
-		sourceDataLine.close();
+	protected void play() {
+		clip.stop();
+		clip.setFramePosition(0);
+		clip.start();
 	}
 	
-	public void stop() {
-		play = false;
+	protected void close() {
+		clip.stop();
+		clip.close();
 	}
 	
 }

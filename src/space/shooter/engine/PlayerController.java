@@ -28,19 +28,19 @@ public class PlayerController implements Runnable {
 	@Override
 	public void run() {
 		while (Utility.run) {
-			if (keys[0] == 1 && playerLocation.y > Utility.SCREEN_OFFSET) {
+			if (keys[0] == 1 && playerLocation.y > Utility.screenOffset) {
 				playerLocation.y -= 5;
 			}
 			
-			if (keys[1] == 1 && playerLocation.x > Utility.SCREEN_OFFSET) {
+			if (keys[1] == 1 && playerLocation.x > Utility.screenOffset) {
 				playerLocation.x -= 5;
 			}
 			
-			if (keys[2] == 1 && playerLocation.y < canvas.getHeight() - player.getHeight() - Utility.SCREEN_OFFSET) {
+			if (keys[2] == 1 && playerLocation.y < canvas.getHeight() - player.getHeight() - Utility.screenOffset) {
 				playerLocation.y += 5;
 			}
 			
-			if (keys[3] == 1 && playerLocation.x < canvas.getWidth() - player.getWidth() - Utility.SCREEN_OFFSET) {
+			if (keys[3] == 1 && playerLocation.x < canvas.getWidth() - player.getWidth() - Utility.screenOffset) {
 				playerLocation.x += 5;
 			}
 			

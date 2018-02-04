@@ -12,6 +12,7 @@ import space.shooter.engine.BulletController;
 import space.shooter.engine.CollisionDetector;
 import space.shooter.engine.ObstacleController;
 import space.shooter.engine.PlayerController;
+import space.shooter.sound.SoundManager;
 
 public class Frame extends JFrame implements KeyListener {
 	
@@ -21,15 +22,19 @@ public class Frame extends JFrame implements KeyListener {
 	private CustomComponent player, canvas;
 	private CustomComponent[] bullets = new CustomComponent[50];
 	private CustomComponent[][] obstacles = new CustomComponent[5][10];
+	
 	private BulletController bulletController;
 	private PlayerController playerController;
 	private ObstacleController obstacleController;
 	
-	public Frame() {
+	private SoundManager soundManager;
+	
+	public Frame() throws Exception {
 		Utility.run = true;
 		
 		initializeUI();
 		initializeEngine();
+		initializeSound();
 	}
 	
 	private void initializeUI() {
@@ -47,7 +52,7 @@ public class Frame extends JFrame implements KeyListener {
 		setContentPane(canvas);
 		
 		player = new CustomComponent(CustomComponentType.PLAYER, Utility.playerDimension, new ImageIcon(this.getClass().getResource("/resources/images/player-1.png")));
-		player.setLocation((canvas.getWidth() / 2) - (player.getWidth() / 2), canvas.getHeight() - player.getHeight() - Utility.SCREEN_OFFSET);
+		player.setLocation((canvas.getWidth() / 2) - (player.getWidth() / 2), canvas.getHeight() - player.getHeight() - Utility.screenOffset);
 		canvas.add(player);
 		
 		imageIcon = new ImageIcon(this.getClass().getResource("/resources/images/bullet.png"));
@@ -73,8 +78,14 @@ public class Frame extends JFrame implements KeyListener {
 		new Thread(bulletController).start();
 		new Thread(playerController).start();
 		new Thread(obstacleController).start();
-		new Thread(new CollisionDetector(player, canvas, null, obstacleController.getObstaclesOnCanvas())).start();		// parameter is null because we want collision detector to detect collision between player and obstacles...
+		new Thread(new CollisionDetector(player, canvas, bulletController.getBulletsOnCanvas(), obstacleController.getObstaclesOnCanvas())).start();		// parameter is null because we want collision detector to detect collision between player and obstacles...
 		new Thread(new CollisionDetector(null, canvas, bulletController.getBulletsOnCanvas(), obstacleController.getObstaclesOnCanvas())).start();		// parameter is null because we want collision detector to detect collision between bullets and obstacles...
+	}
+	
+	private void initializeSound() throws Exception {
+		soundManager = new SoundManager(bulletController);
+		
+		new Thread(soundManager).start();
 	}
 	
 	@Override
@@ -99,6 +110,7 @@ public class Frame extends JFrame implements KeyListener {
 		else if (keyCode == KeyEvent.VK_ESCAPE) {
 			Utility.run = false;
 			
+			soundManager.close();
 			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
 	}

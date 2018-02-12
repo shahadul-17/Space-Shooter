@@ -23,39 +23,35 @@ public class CollisionDetector implements Runnable {
 		
 		while (true) {
 			try {
-				if (player == null) {
-					for (i = 0; i < bullets.size(); i++) {
-						for (j = 0; j < obstacles.size(); j++) {
-							CustomComponent obstacle = obstacles.get(j);
-							
-							if (bullets.get(i).getBounds().intersects(obstacle.getBounds())) {
-								canvas.remove(obstacle);
-								obstacles.remove(obstacle);
-								canvas.remove(bullets.get(i));
-								bullets.remove(i);
-								
-								break;
-							}
-						}
-					}
-				}
-				else {
-					for (i = 0; i < obstacles.size(); i++) {
-						CustomComponent stone = obstacles.get(i);
+				for (i = 0; i < bullets.size(); i++) {
+					for (j = 0; j < obstacles.size(); j++) {
+						CustomComponent obstacle = obstacles.get(j);
 						
-						if (stone.getParent() == canvas && stone.getBounds().intersects(player.getBounds())) {
-							GameController.playerAlive = false;		// raising flag when player is dead...
-							
-							canvas.remove(player);
-							
-							for (j = 0; j < bullets.size(); j++) {
-								canvas.remove(bullets.get(j));
-							}
-
-							bullets.clear();
+						if (bullets.get(i).getBounds().intersects(obstacle.getBounds())) {
+							canvas.remove(obstacle);
+							obstacles.remove(obstacle);
+							canvas.remove(bullets.get(i));
+							bullets.remove(i);
 							
 							break;
 						}
+					}
+				}
+			}
+			catch (Exception exception) {
+				exception.printStackTrace();
+			}
+			
+			try {
+				for (i = 0; i < obstacles.size(); i++) {
+					CustomComponent stone = obstacles.get(i);
+					
+					if (stone.getParent() == canvas && stone.getBounds().intersects(player.getBounds())) {
+						GameController.playerAlive = false;		// raising flag when player is dead...
+						
+						canvas.remove(player);
+						
+						break;
 					}
 				}
 			}

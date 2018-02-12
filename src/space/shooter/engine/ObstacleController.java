@@ -73,7 +73,7 @@ public class ObstacleController implements Runnable {
 			counter++;
 		}
 		
-		for (int i = 0; i < obstaclesOnCanvas.size(); i++) {		// clearing the obstacles from screen...
+		for (int i = 0; i < obstaclesOnCanvas.size(); i++) {		// clearing the obstacle(s) from screen...
 			canvas.remove(obstaclesOnCanvas.get(i));
 		}
 		

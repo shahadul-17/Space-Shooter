@@ -51,7 +51,7 @@ public class BulletController implements Runnable {
 	public void run() {
 		int i = 0;
 		
-		while (player.getParent() == canvas) {
+		while (GameController.playerAlive) {
 			if (shoot) {
 				spawnBullet();
 				
@@ -77,6 +77,12 @@ public class BulletController implements Runnable {
 				Utility.sleep(20);
 			}
 		}
+		
+		for (i = 0; i < bulletsOnCanvas.size(); i++) {		// clearing the bullet(s) from screen...
+			canvas.remove(bulletsOnCanvas.get(i));
+		}
+
+		bulletsOnCanvas.clear();
 	}
 	
 }

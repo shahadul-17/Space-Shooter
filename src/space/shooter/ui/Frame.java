@@ -47,6 +47,7 @@ public class Frame extends JFrame implements ActionListener, KeyListener {
 	private BulletController bulletController;
 	private PlayerController playerController;
 	private ObstacleController obstacleController;
+	private CollisionDetector collisionDetector;
 	
 	private SoundManager soundManager;
 	
@@ -115,12 +116,12 @@ public class Frame extends JFrame implements ActionListener, KeyListener {
 		bulletController = new BulletController(player, canvas, bullets);
 		playerController = new PlayerController(player, canvas, bulletController);
 		obstacleController = new ObstacleController(canvas, obstacles);
+		collisionDetector = new CollisionDetector(player, canvas, bulletController.getBulletsOnCanvas(), obstacleController.getObstaclesOnCanvas());
 		
 		new Thread(bulletController).start();
 		new Thread(playerController).start();
 		new Thread(obstacleController).start();
-		new Thread(new CollisionDetector(player, canvas, bulletController.getBulletsOnCanvas(), obstacleController.getObstaclesOnCanvas())).start();		// parameter is null because we want collision detector to detect collision between player and obstacles...
-		new Thread(new CollisionDetector(null, canvas, bulletController.getBulletsOnCanvas(), obstacleController.getObstaclesOnCanvas())).start();		// parameter is null because we want collision detector to detect collision between bullets and obstacles...
+		new Thread(collisionDetector).start();
 	}
 	
 	private void initializeSound() throws Exception {

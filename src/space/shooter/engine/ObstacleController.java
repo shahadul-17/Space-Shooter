@@ -31,7 +31,7 @@ public class ObstacleController implements Runnable {
 		}
 		
 		CustomComponent stone = obstacles[randomNumber][obstacleIndices[randomNumber]];
-		stone.setLocation(random.nextInt(canvas.getWidth() - stone.getWidth() - Utility.screenOffset) + Utility.screenOffset, stone.getHeight() * -1);
+		stone.setLocation(random.nextInt(canvas.getWidth() - stone.getWidth() - Utility.screenOffset) + Utility.screenOffset, -stone.getHeight());
 		obstaclesOnCanvas.add(stone);
 		canvas.add(stone);
 		
@@ -44,7 +44,7 @@ public class ObstacleController implements Runnable {
 	
 	@Override
 	public void run() {
-		while (Utility.run) {
+		while (GameController.run) {
 			if (counter == 50) {
 				counter = 0;
 				
@@ -72,6 +72,12 @@ public class ObstacleController implements Runnable {
 			
 			counter++;
 		}
+		
+		for (int i = 0; i < obstaclesOnCanvas.size(); i++) {		// clearing the obstacles from screen...
+			canvas.remove(obstaclesOnCanvas.get(i));
+		}
+		
+		obstaclesOnCanvas.clear();
 	}
 	
 }

@@ -40,6 +40,7 @@ public class CustomComponent extends JComponent {
 	protected void paintComponent(Graphics graphics) {
 		graphics.drawImage(image, 0, 0, null);
 		super.paintComponent(graphics);
+		repaint();
 	}
 	
 	public CustomComponentType getCustomComponentType() {

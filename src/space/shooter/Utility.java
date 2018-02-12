@@ -1,11 +1,11 @@
 package space.shooter;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 public class Utility {
 	
-	public static volatile boolean run = false;
 	public static int screenOffset;
 	public static final int BASE_SCREEN_OFFSET = 50;
 	
@@ -22,6 +22,11 @@ public class Utility {
 		new Dimension(82, 50),		// obstacle-3
 		new Dimension(62, 50),		// obstacle-4
 		new Dimension(50, 55)		// obstacle-5
+	};
+	
+	public static final Font[] FONTS = {
+		new Font("MV Boli", Font.PLAIN, 46),
+		new Font("MV Boli", Font.BOLD, 88)
 	};
 	
 	public static int scaleRegardingScreenWidth(int value) {

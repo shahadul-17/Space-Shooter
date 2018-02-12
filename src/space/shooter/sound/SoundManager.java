@@ -2,6 +2,7 @@ package space.shooter.sound;
 
 import space.shooter.Utility;
 import space.shooter.engine.BulletController;
+import space.shooter.engine.GameController;
 
 public class SoundManager implements Runnable {
 	
@@ -19,8 +20,8 @@ public class SoundManager implements Runnable {
 	
 	@Override
 	public void run() {
-		while (Utility.run) {
-			if (bulletController.isShot()) {
+		while (GameController.run) {
+			if (GameController.playerAlive && bulletController.isShot()) {
 				soundPlayer.play();
 			}
 			

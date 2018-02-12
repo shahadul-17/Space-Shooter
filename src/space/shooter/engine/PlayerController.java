@@ -27,12 +27,14 @@ public class PlayerController implements Runnable {
 	
 	@Override
 	public void run() {
-		while (Utility.run) {
+		int playerHalfWidth = player.getWidth() / 2;
+		
+		while (GameController.run) {
 			if (keys[0] == 1 && playerLocation.y > Utility.screenOffset) {
 				playerLocation.y -= 5;
 			}
 			
-			if (keys[1] == 1 && playerLocation.x > Utility.screenOffset) {
+			if (keys[1] == 1 && playerLocation.x > -playerHalfWidth) {
 				playerLocation.x -= 5;
 			}
 			
@@ -40,7 +42,7 @@ public class PlayerController implements Runnable {
 				playerLocation.y += 5;
 			}
 			
-			if (keys[3] == 1 && playerLocation.x < canvas.getWidth() - player.getWidth() - Utility.screenOffset) {
+			if (keys[3] == 1 && playerLocation.x < canvas.getWidth() - playerHalfWidth) {
 				playerLocation.x += 5;
 			}
 			

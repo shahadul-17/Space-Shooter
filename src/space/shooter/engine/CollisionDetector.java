@@ -44,6 +44,8 @@ public class CollisionDetector implements Runnable {
 						CustomComponent stone = obstacles.get(i);
 						
 						if (stone.getParent() == canvas && stone.getBounds().intersects(player.getBounds())) {
+							GameController.playerAlive = false;		// raising flag when player is dead...
+							
 							canvas.remove(player);
 							
 							for (j = 0; j < bullets.size(); j++) {

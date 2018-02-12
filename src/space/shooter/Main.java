@@ -15,7 +15,6 @@ public class Main {
 			frame.setVisible(true);
 		}
 		catch (Exception exception) {
-			exception.printStackTrace();		// for easier debugging...
 			JOptionPane.showMessageDialog(null, exception.getMessage(), Utility.TITLE, JOptionPane.ERROR_MESSAGE);
 		}
 	}
